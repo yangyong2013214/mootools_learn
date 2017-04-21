@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+
+    <style>
+        #myElement {
+            height: 100px;
+            border: 1px solid #d6d6d6;
+        }
+
+        #myChild {
+            height: 50px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body id="myLink">
+
+<a id="myAnchor" href="http://baidu.com/">Visit Baidu.com</a>
+
+<div id="myElement">
+    <div id="myChild"></div>
+</div>
+
+
+<form>
+    <input id="myCheckbox" type="checkbox"/>
+</form>
+
+
+<input type="text" id="myInput">
+<script>
+
+    $('myLink').addEvent('keydown', function (event) {
+        // the passed event parameter is already an instance of the Event type.
+        alert(event.key);   // returns the lowercase letter pressed.
+        alert(event.shift); // returns true if the key pressed is shift.
+        if (event.key == 's' && event.control) alert('Document saved.'); //executes if the user presses Ctr+S.
+    });
+
+
+    $('myAnchor').addEvent('click', function (event) {
+        event.stop(); //Prevents the browser from following the link.
+        this.set('text', 'Where do you think you\'re going?'); //'this' is Element that fires the Event.
+        (function () {
+            this.set('text', 'Instead visit the Blog.').set('href', 'http://blog.mootools.net');
+        }).delay(500, this);
+    });
+
+    $('myElement').addEvent('click', function () {
+        alert('click');
+        return false; //equivalent to stopPropagation.
+    });
+    $('myChild').addEvent('click', function (event) {
+        event.stopPropagation(); //prevents the event from bubbling up, and fires the parent's click event.
+    });
+
+
+    $('myCheckbox').addEvent('click', function (event) {
+        event.preventDefault(); //prevents the checkbox from being "checked".
+    });
+
+
+    DOMEvent.defineKey(16, 'shift');
+    $('myInput').addEvent('keydown', function (event) {
+        if (event.key == 'shift') alert('You pressed shift.');
+    });
+</script>
+</body>
+</html>

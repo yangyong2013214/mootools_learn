@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+</head>
+<body>
+<script>
+    //demo01
+    //类方法
+    // Syntax:
+    //fn(item, index, object)
+    //Arguments:
+    //item - (mixed) The current item in the array.
+    //index - (number) The current item's index in the array.
+    // In the case of an object, it is passed the key of that item rather than the index.
+    //object - (mixed) The actual array/object.
+
+    //    Array.each(['Sun', 'Mon', 'Tue'], function(day, index){
+    //        alert('name:' + day + ', index: ' + index);
+    //    });
+
+    /*
+     //类方法clone，
+     var myArray = ['red', 'blue', 'green'];
+     var otherArray = Array.clone(myArray);
+     console.log(myArray[0]);    //red
+     console.log(otherArray[0]);   //red
+     console.log(myArray == otherArray); //false
+
+     //类方法convert 将其他类型转换成数组
+     console.log(Array.convert('hello')); // returns ['hello'].
+     console.log(Array.convert(['a', 'b', 'c'])); // returns ['a', 'b', 'c'].
+
+
+     // 实例方法 each
+     // Syntax:
+     //fn(item, index, object)
+     //同类方法Array.each，
+     //    ['apple', 'banana', 'lemon'].each(function(item, index){
+     //        alert(index + " = " + item);
+     //    });
+
+
+     //var arr = myArray.invoke(method[, arg, arg, arg ...])
+     var foo = [4, 8, 15, 16, 23, 42];
+     var bar = foo.invoke('limit', 10, 30); //==>[10, 10, 15, 16, 23, 30]
+     console.log(bar);
+     //The method that is invoked is a method of each of the items.
+     // If the method does not exist, then an error will be thrown. For example:
+     //[0, false, 'string'].invoke('limit', 0, 10); // throws an error!
+
+     //every
+     var areAllBigEnough = [10, 4, 25, 100].every(function (item, index) {
+     return item > 20;
+     });
+     console.log(areAllBigEnough); //==> false
+
+     //filter
+     var biggerThanTwenty = [10, 3, 25, 100].filter(function (item, index) {
+     return item > 20;
+     }); // biggerThanTwenty = [25, 100]
+     console.log(biggerThanTwenty); //==> [25, 100]
+
+     //clean
+     var myArray = [null, 1, 0, true, false, 'foo', undefined, ''];
+     console.log(myArray.clean()) // returns [1, 0, true, false, 'foo', '']
+
+     //indexOf
+     console.log(['apple', 'lemon', 'banana'].indexOf('lemon')); // returns 1
+     console.log(['apple', 'lemon'].indexOf('banana')); // returns -1
+
+     //map
+     var timesTwo = [1, 2, 3].map(function (item, index) {
+     return item * 2;
+     });
+     console.log(timesTwo); //[2, 4, 6]
+
+     //some
+     var isAnyBigEnough = [10, 4, 25, 100].some(function (item, index) {
+     return item > 20;
+     });
+     console.log(isAnyBigEnough); //true
+
+     //associate
+     //Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
+     var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
+     var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
+     console.log(sounds.associate(animals)); //Object {Cow: "Moo", Pig: "Oink", Dog: "Woof", Cat: "Miao"}
+
+
+     //link
+     //Accepts an object of key / function pairs to assign values.
+     var el = document.createElement('div');
+     var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
+     var result = arr2.link({
+     myNumber: Type.isNumber,
+     myElement: Type.isElement,
+     myObject: Type.isObject,
+     myString: Type.isString,
+     myBoolean: function (obj) {
+     return obj != null;
+     }
+     });
+
+     console.log(arr2);  //[100, "Hello", Object, div, false]
+     console.log(result); //Object {myNumber: 100, myString: "Hello", myObject: Object, myElement: div, myBoolean: false}
+
+     //contains
+     result = ['a', 'b', 'c'].contains('a'); // returns true
+     console.log(result);
+     result = ['a', 'b', 'c'].contains('d'); // returns false
+     console.log(result);
+
+
+     //append
+     var myOtherArray = ['green', 'yellow'];
+     result = ['red', 'blue'].append(myOtherArray); // returns ['red', 'blue', 'green', 'yellow'];
+     console.log(result);
+     result = [0, 1, 2].append([3, [4]]); // [0, 1, 2, 3, [4]]
+     console.log(result);
+
+     result = [0, 1, 2].append([2, 3]); // [0, 1, 2, 2, 3]
+     console.log(result);
+
+     //getLast
+     result = ['Cow', 'Pig', 'Dog', 'Cat'].getLast(); // returns 'Cat'
+     console.log(result);
+
+     //getRandom
+     result = ['Cow', 'Pig', 'Dog', 'Cat'].getRandom(); // returns one of the items
+     console.log(result);
+
+     //include
+     //Pushes the passed element into the array if it's not already present (case and type sensitive).
+     result = ['Cow', 'Pig', 'Dog'].include('Cat'); // returns ['Cow', 'Pig', 'Dog', 'Cat']
+     console.log(result);
+
+     result = ['Cow', 'Pig', 'Dog'].include('Dog'); // returns ['Cow', 'Pig', 'Dog']
+     console.log(result);
+
+     //combine 联合
+     var animals = ['Cow', 'Pig', 'Dog'];
+     result = animals.combine(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat'];
+     console.log(result);
+     console.log(animals);
+
+     //erase 擦除
+     var animals = ['Cow', 'Pig', 'Dog', 'Cat', 'Dog']
+     result = animals.erase('Dog') // returns ['Cow', 'Pig', 'Cat']
+     console.log(result);
+     console.log(animals);//animals = ['Cow', 'Pig', 'Cat']
+
+     result = ['Cow', 'Pig', 'Dog'].erase('Cat') // returns ['Cow', 'Pig', 'Dog']
+     console.log(result);
+     */
+
+    //empty
+    var myArray = ['old', 'data'];
+    myArray.empty(); //myArray is now []
+    console.log(myArray); //[]
+
+    var myArray = [1, 2, 3, [4, 5, [6, 7]], [[[8]]]];
+    var newArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
+    console.log(newArray);
+
+
+    //pick
+    //Returns the first defined value of the array passed in, or null.
+    // 返回传入的数组的第一个定义的值，或null。
+    function say(infoMessage, errorMessage) {
+        console.log([errorMessage, infoMessage, 'There was no message supplied.'].pick());
+
+        //or more MooTools 1.2 style using Generics
+        console.log(Array.pick([errorMessage, infoMessage, 'There was no message supplied.']));
+
+    }
+    say(); // alerts 'There was no message supplied.'
+    say('This is an info message.'); // alerts 'This is an info message.'
+    say('This message will be ignored.', 'This is the error message.'); // alerts 'This is the error message.'
+
+
+    // hexToRgb
+    // Converts an hexadecimal color value to RGB. Input array must be the following hexadecimal color format.
+    // ['FF', 'FF', 'FF']
+    result = ['11', '22', '33'].hexToRgb(); // returns 'rgb(17, 34, 51)'
+    console.log(result);
+    result = ['11', '22', '33'].hexToRgb(true); // returns [17, 34, 51]
+    console.log(result);
+
+    //rgbToHex
+    //Converts an RGB color value to hexadecimal.
+    // Input array must be in one of the following RGB color formats.
+    // [255, 255, 255], or [255, 255, 255, 1]
+
+    result = [17, 34, 51].rgbToHex(); // returns '#112233'
+    console.log(result);
+    result = [17, 34, 51].rgbToHex(true); // returns ['11', '22', '33']
+    console.log(result);
+    result = [17, 34, 51, 0].rgbToHex(); // returns 'transparent'
+    console.log(result);
+</script>
+</body>
+</html>

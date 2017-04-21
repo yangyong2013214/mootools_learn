@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+</head>
+<body>
+<script>
+    //demo01
+    //类方法
+
+    //类方法convert
+    //Returns the passed parameter as a Number, or null if not a number.
+    console.log(Number.convert(2)); // returns 2
+    console.log(Number.convert(true)); // returns null
+
+    //类方法random
+    var result = Number.random(5, 20); // returns a random number between 5 and 20.
+    console.log(result);
+
+
+    //对象方法 limit
+    //Limits this number between two bounds.
+    (12).limit(2, 6.5);  // returns 6.5
+    (-4).limit(2, 6.5);  // returns 2
+    (4.3).limit(2, 6.5); // returns 4.3
+
+    //round
+    //Returns this number rounded to the specified precision.
+    //precision - (number, optional: defaults to 0) The number of digits after the decimal place.
+
+    console.log(12.45.round());   // returns 12
+    console.log(12.45.round(1));  // returns 12.5
+    console.log(12.45.round(-1)); // returns 10
+
+    //times
+    //Executes the function passed in the specified number of times.
+    (4).times(alert); // alerts "0", then "1", then "2", then "3".
+
+
+    console.log((-1).abs());
+
+</script>
+</body>
+</html>

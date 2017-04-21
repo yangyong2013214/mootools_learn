@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+
+    <!--<script src="../../Source/Core/Core.js"></script>-->
+</head>
+<body>
+<script>
+    console.log(String.trim);
+    console.log(String.prototype.trim);
+    console.log(window.MooTools);
+    console.log(window.Hash)
+
+    console.log(undefined == null);
+    console.log(NaN == null);
+    console.log(false == null);
+    console.log('' == null);
+    console.log(0 == null);
+
+    console.log('abc'.$constructor );
+    console.log('abc'.constructor );
+
+    var A=new Class({
+        initialize:function(){
+        }
+    })
+    var B=new Class({
+        Extends:A,
+        initialize:function(){
+        }
+    })
+
+
+//    new Type('a',A);
+//    new Type('b',B);
+    var b=new B();
+    console.log( instanceOf(b,A));
+
+    console.log(window.hasOwnProperty);
+
+
+    console.log(String.forEachMethod)
+
+    console.log(Date.now());
+
+    console.log(String.uniqueID())
+
+</script>
+</body>
+</html>

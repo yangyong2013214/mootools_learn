@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+</head>
+<body>
+<script>
+
+    //each
+
+//    Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
+//        alert('The ' + key + ' day of the week is ' + value);
+//    });
+
+    //merge
+    //合并任意数量的对象。
+//    var obj1 = {a: 0, b: 1};
+//    var obj2 = {c: 2, d: 3};
+//    var obj3 = {a: 4, d: 5};
+//    var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj2, and obj3 are unaltered)
+//
+//    console.log(merged === obj1); // true, obj1 gets altered and returned as merged object
+//    console.log(obj1);
+//    console.log(obj2);
+//    console.log(obj3);
+//    console.log(merged);
+//
+//    var nestedObj1 = {a: {b: 1, c: 1}};
+//    var nestedObj2 = {a: {b: 2}};
+//    var nested = Object.merge(nestedObj1, nestedObj2); // returns: {a: {b: 2, c: 1}}
+//
+//    console.log(nestedObj1);
+//    console.log(nestedObj2);
+//    console.log(nested);
+//
+//    //clone
+//    var obj1 = {a: 0, b: 1};
+//    var obj2 = Object.clone(obj1);
+//
+//    obj1.a = 42;
+//    alert(obj1.a);    // alerts '42'
+//    alert(obj2.a);    // alerts '0'
+//
+//    //append
+      //追加一个对象的所有属性到另外一个对象.
+//    var firstObj = {
+//        name: 'John',
+//        lastName: 'Doe'
+//    };
+//    var secondObj = {
+//        age: '20',
+//        sex: 'male',
+//        lastName: 'Dorian'
+//    };
+//    Object.append(firstObj, secondObj);
+//    console.log(firstObj);
+
+
+    //注意： append和merge 唯一的区别，我可以看到，append需要两个参数，并且merge需要两个或多个参数。
+    //阅读源代码的方法，我看到另一个区别。 merge方法将从其他对象中克隆属性，而append方法仅复制它们。
+    //因此，如果在某些对象中有一个对象或数组作为属性，那么在使用append之后，它们将从原始对象可访问：
+
+    var firstObj = {
+        name: 'John',
+        lastName: [ 'Doe' ]
+    };
+    var secondObj = {
+        age: '20',
+        sex: 'male',
+        lastName: [ 'Dorian' ]
+    };
+
+    Object.merge(firstObj, secondObj);
+    //Object.append(firstObj, secondObj);
+
+    console.log(firstObj.lastName[0]); // Dorian
+
+    secondObj.lastName[0] = 'McEnroe';
+
+    console.log(firstObj.lastName[0]); // McEnroe
+
+    //如果您使用merge，则在更改secondObj.lastName时，firstObj.lastName中的数组项不会更改，因为它们不是相同的对象。
+    //另外，当第二个参数是一个字符串时，merge方法有一个重载：
+    //merge（obj，“name”，obj2）
+    //这将仅将属性obj2.name复制到obj，即与merge（obj，{name：obj2.name}）基本相同。
+
+    var object = {
+        a: 'one',
+        b: 'two',
+        c: 'three'
+    };
+    var result = Object.subset(object, ['a', 'c']); // returns {a: 'one', c: 'three'}
+    console.log(result);
+    console.log(object);
+
+    var myObject = {a: 1, b: 2, c: 3};
+    var timesTwo = Object.map(myObject, function(value, key){
+        return value * 2;
+    });
+    console.log(timesTwo);
+
+
+    var myObject = {a: 10, b: 20, c: 30};
+    var biggerThanTwenty = Object.filter(myObject, function(value, key){
+        return value > 20;
+    });
+    console.log(biggerThanTwenty);
+
+    var myObject = {a: 10, b: 4, c: 25, d: 100};
+    var areAllBigEnough = Object.every(myObject, function(value, key){
+        return value > 20;
+    });
+    console.log(areAllBigEnough); //false
+
+    var myObject = {a: 10, b: 4, c: 25, d: 100};
+    var areAnyBigEnough = Object.some(myObject, function(value, key){
+        return value > 20;
+    }); //isAnyBigEnough = true
+    console.log(areAnyBigEnough);
+
+    var myObject = {
+        name: 'John',
+        lastName: 'Doe'
+    };
+    console.log(Object.values(myObject)); //["John", "Doe"]
+    console.log(Object.getLength(myObject)); // 2
+    console.log(Object.keys(myObject)); //["name", "lastName"]
+    //Object.getLength(myObject); // returns 2
+
+    var myObject = {a: 'one', b: 'two', c: 3};
+    console.log(Object.keyOf(myObject, 'two')); // returns 'b'
+    console.log(Object.keyOf(myObject, 3)); // returns 'c'
+    console.log(Object.keyOf(myObject, 'four')); // returns null
+
+
+    var myObject = {a: 'one', b: 'two', c: 'three'};
+    console.log(Object.contains(myObject, 'one')); // returns true
+    console.log(Object.contains(myObject, 'four')); // returns false
+
+
+
+    console.log(Object.toQueryString({apple: 'red', lemon: 'yellow'})); // returns 'apple=red&lemon=yellow'
+
+    console.log(Object.toQueryString({apple: 'red', lemon: 'yellow'}, 'fruits')); // returns 'fruits[apple]=red&fruits[lemon]=yellow'
+</script>
+</body>
+</html>

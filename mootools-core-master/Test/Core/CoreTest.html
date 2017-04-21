@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="../../MooTools-Core-1.6.0.js"></script>-->
+</head>
+<body>
+<ul id="a">
+    <li>dd</li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+<script>
+//    //    var enumerables = true;
+//    //    //for...in 循环只遍历可枚举属性
+//    //    for (var i in {toString: 1}) enumerables = null;
+//    //
+//    //    if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+//    //    //for (var i in {toString: 1}) enumerables = null;
+//    //    console.log(enumerables);
+//    //
+//    //
+    Function.prototype.overloadSetter = function (usePlural) {
+        // self指代的是原函数对象（是一个函数哦）
+        var self = this;
+        console.log('self----->' + this);
+        // 包装之后的函数
+        return function (a, b) {
+            //  Tricky：假如不带参数的调用包装后的函数，返回非强化的版本（原函数），注意不会执行原函数的逻辑。
+            console.log('obj----->' + this);
+            if (a == null) return this;
+            if (usePlural || typeof a != 'string') {
+                //  强化！假如第一个参数不是string，那么就假设传入的是对象（并忽略参数b），枚举传入对象的每个属性，并对this对象执行原函数的逻辑（将属性,属性值作为参数传入）。
+                for (var k in a) self.call(this, k, a[k]);
+                /*<ltIE8>*/
+                //forEachObjectEnumberableKey(a, self, this);
+                /*</ltIE8>*/
+            } else {
+                // 这个就是执行原函数：传入a,b两个参数。维持this指针不变。在后面的应用中可以看到这个是为了在this对象上附加属性。
+                self.call(this, a, b);
+            }
+            return this;
+        };
+    };
+
+
+var fnOrig = function(key, value){
+    console.log(key + ': ' + value);
+};
+
+var fnOver = fnOrig.overloadSetter();
+//fnOver();
+fnOver('fruit', 'banana');
+fnOver({'fruit': 'banana', 'vegetable': 'carrot'});
+
+
+var funOrig = function(key, value){
+    this[key] = value;
+}
+var funOver = funOrig.overloadSetter();
+funOver('name', 'jack'); //this[name] = jack;
+funOver({name:'jack', age:21});
+
+
+
+//var funTest = function(){
+//    console.log(typeOf(arguments)); // arguments
+//    console.log(typeOf(Array.prototype.slice.call(arguments)) ); //array
+//
+//    var nodes = document.querySelectorAll('li');
+//    console.log(typeOf(nodes)); // collection
+//    console.log(typeOf(Array.prototype.slice.call(nodes)) ); //array
+//
+//}
+//funTest('1', '2', '5');
+
+var funA = function (item) {
+    var number = parseFloat(item);
+    return isFinite(number) ? number : null;
+};
+
+console.log(funA('a'));
+
+    Function.prototype.extend = function (key, value) {
+        this[key] = value;
+    }.overloadSetter();
+    //
+//      var a =   String.extend('name', 'jack');
+//        console.log(a.name);
+
+
+
+//    var fun = function(){
+//        console.log('fun');
+//    }
+//
+//    var result = fun.overloadSetter();
+//    result();
+    //console.log();
+//
+//
+    var Type = this.Type = function (name, object) {
+        if (name) {
+            var lower = name.toLowerCase();
+            var typeCheck = function (item) {
+                return true;
+            };
+
+            Type['is' + name] = typeCheck;
+            if (object != null) {
+                // 附加$family属性，这样typeOf就能更好的工作了。看到没，还被hide起来了。
+//                object.prototype.$family = (function () {
+//                    return lower;
+//                }).hide();
+                //<1.2compat>
+                object.type = typeCheck;
+                //</1.2compat>
+            }
+        }
+
+        if (object == null) return null;
+        console.log(this);
+        console.log('Type this-->' + this);
+        object.extend(this);
+        object.$constructor = Type;
+        object.prototype.$constructor = object;
+        //返回了这个被包装过的类
+        return object;
+    };
+
+
+    //    Type('TextNode', null);
+    //    console.log(Type.isTextNode());
+
+    function fun() {
+        alert('jack')
+    }
+
+    var obj = new Type('fun', fun);
+    var a
+    console.log(obj);
+    //    var o = new obj;
+    //    console.log(o);
+    console.log(obj.type());
+    obj();
+    console.log(obj.$constructor);
+    console.log(Type.isfun(fun));
+    console.log(obj.prototype.$constructor);
+//
+//
+//    var fn = {
+//        name: 'jack',
+//        hello: function () {
+//            console.log('hello')
+//        }
+//    }
+    //TypeError object.extend is not a function
+//    var obj1 = new Type('fn', fn);
+//    console.log(obj1);
+////        var o = new obj;
+////        console.log(o);
+//    console.log(obj1.type());
+//    //obj();
+//    console.log(obj1.$constructor);
+//    console.log(obj1.prototype.$constructor);
+
+
+
+
+//var hooks = {};
+//
+//// 根据对象的类别取得该类别所有相关类型的数组。
+//var hooksOf = function (object) {
+//    var type = typeOf(object.prototype);
+//    console.log(type);
+//    return hooks[type] || (hooks[type] = []);
+//};
+//
+//var fn = {
+//    name: 'jack',
+//    hello: function () {
+//        console.log('hello')
+//    }
+//}
+//
+//var implement = function (name, method) {
+//    // 跳过私有函数，私有函数不能赋予其他对象。
+//    //if (method && method.$hidden) return;
+//    // 获取对象类别
+//    console.log(this);
+//    var hooks = hooksOf(this);
+//    console.log(hooks);
+//    for (var i = 0; i < hooks.length; i++) {
+//        console.log('--begin--');
+//        var hook = hooks[i];
+//        if (typeOf(hook) == 'type') implement.call(hook, name, method);
+//        else hook.call(this, name, method);
+//    }
+//
+////    var previous = this.prototype[name];
+////    if (previous == null || !previous.$protected) this.prototype[name] = method;
+////
+////    if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function (item) {
+////        return method.apply(item, slice.call(arguments, 1));
+////    });
+//};
+//
+////for (var i = 0; i < hooks.length; i++) {
+////    var hook = hooks[i];
+////    if (typeOf(hook) == 'type') implement.call(hook, name, method);
+////    else hook.call(this, name, method);
+////}
+//console.log(implement('fun',fun));
+//
+
+
+</script>
+</body>
+</html>

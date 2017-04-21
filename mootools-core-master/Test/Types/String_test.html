@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../MooTools-Core-1.6.0.js"></script>
+</head>
+<body>
+<script>
+    //demo01
+    //类方法
+
+     //类方法convert 将其他类型转换成字符串
+    console.log(String.convert(2)); // returns '2'
+    console.log(String.convert(true)); // returns 'true'
+
+    //类方法uniqueID
+    //Generates a unique ID
+    console.log(String.uniqueID());
+
+
+
+    //对象方法 test
+    'I like cookies'.test('cookie'); // returns true
+    'I like cookies'.test('COOKIE', 'i'); // returns true (ignore case)
+    'I like cookies'.test('cake'); // returns false
+
+    //trim
+    //Trims the leading and trailing spaces off a string.
+    '    i like cookies     '.trim(); // returns 'i like cookies'
+
+    //clean
+    // Removes all extraneous whitespace from a string and trims it (String:trim).
+    ' i      like     cookies      \n\n'.clean(); // returns 'i like cookies'
+
+    //camelCase
+    'I-like-cookies'.camelCase(); // returns 'ILikeCookies'
+
+    //hyphenate
+    'ILikeCookies'.hyphenate(); // returns '-i-like-cookies'
+
+    //capitalize
+    'i like cookies'.capitalize(); // returns 'I Like Cookies'
+
+    //escapeRegExp
+    // Escapes all regular expression characters from the string.
+    // 从字符串中转义所有正则表达式字符。
+    'animals.sheep[1]'.escapeRegExp(); // returns 'animals\.sheep\[1\]'
+
+
+    // toInt Parses this string and returns a number of the specified radix or base.
+    '4em'.toInt(); // returns 4
+    '10px'.toInt(); // returns 10
+
+    // toFloat Parses this string and returns a floating point number.
+    '95.25%'.toFloat(); // returns 95.25
+    '10.848'.toFloat(); // returns 10.848
+
+    //hexToRgb
+    //Converts a hexadecimal color value to RGB.
+    // Input string must be in one of the following hexadecimal color formats (with or without the hash).
+    // '#ffffff', #fff', 'ffffff', or 'fff'
+    '#123'.hexToRgb(); // returns 'rgb(17, 34, 51)'
+    '112233'.hexToRgb(); // returns 'rgb(17, 34, 51)'
+    '#112233'.hexToRgb(true); // returns [17, 34, 51]
+
+
+    //rgbToHex
+    //Converts an RGB color value to hexadecimal.
+    // Input string must be in one of the following RGB color formats. 'rgb(255, 255, 255)',
+    // or 'rgba(255, 255, 255, 1)'
+    'rgb(17, 34, 51)'.rgbToHex(); // returns '#112233'
+    'rgb(17, 34, 51)'.rgbToHex(true); // returns ['11', '22', '33']
+    'rgba(17, 34, 51, 0)'.rgbToHex(); // returns 'transparent'
+
+    //substitute 模板
+    var myString = '{subject} is {property_1} and {property_2}.';
+    var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'saviour'};
+    console.log(myString.substitute(myObject)); // returns Jack Bauer is our lord and saviour
+
+
+    var myString = "\<script\>alert('Hello')\<\/script\>Hello, World.";
+    myString.stripScripts(); // returns 'Hello, World.'
+    myString.stripScripts(true); // alerts 'Hello', then returns 'Hello, World.'
+
+</script>
+</body>
+</html>
